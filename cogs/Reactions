@@ -1,0 +1,29 @@
+import disnake
+from disnake.ext import commands
+
+
+#Отправка основного ембеда
+class ButtonsCog(commands.Cog):
+
+  def __init__(self, bot):
+    self.bot = bot
+
+  @commands.Cog.listener()
+  async def on_message(self, message):
+    if (message.author.id
+        == 506186003816513538) or (message.channel.id != 1057403696742416425):
+      return
+
+    if any(x in message.content for x in
+           ['100/50', '200/100']) or message.attachments or message.mentions:
+      return
+
+    try:
+      await message.add_reaction("✅")
+      await message.add_reaction("❌")
+    except disnake.errors.NotFound:
+      pass
+
+
+def setup(bot):
+  bot.add_cog(ButtonsCog(bot))
